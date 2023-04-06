@@ -1,0 +1,6 @@
+cmake_minimum_required(VERSION 3.18)
+project(ej_1)
+
+set(CMAKE_CXX_STANDARD 14)
+
+add_executable(ej_1 main.cpp src/ej1.cpp src/ej1.h)
