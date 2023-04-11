@@ -18,24 +18,19 @@ std::vector<std::vector<short>> M;
 //
 
 longl modexp(longl b, longl e, longl m) {
-    // idea: el modulo de una potencia se puede calcular de a potencias de dos y un excedente.                                                
-    // por ejemplo: b^11 mod 5 = (b^3)*((b^2)^2)^2) mod 5 
-    //                         = (b*(b*(b mod 5) mod 5) mod 5) * (((b^2 mod 5)^2 mod 5)^2 mod 5)
-    // r = el producto de la derecha, c = el producto de la izquierda
-    longl r = b, c = 1;
-     std::cout << b << ' ' << e << ' ' << m << ' ';
-    while (e > 1) {
-        r = (r * r) % m;
+    // idea: metodo binario l-r
+    if (m == 1) {
+        return 0;
+    }
+    longl r = 1;
+    while (e > 0) {
         if (e % 2 == 1) {
-            c = (b * c) % m;
+            r = (b * r) % m;
         }
+        b = (b * b) % m;
         e = e / 2;
     }
-    if (e == 1) {
-        c = (b * c) % m;
-    }
-    std::cout << (r * c) % m << std::endl;
-    return (r * c) % m;
+    return r;
 }
 
 
@@ -45,22 +40,10 @@ bool solucion(longl k, longl s) {
         return (s == r); 
     }
     if (M[k][s] == -1) {
-        bool res = false;
-        if (solucion(k+1, (s + V[k+1]) % m)) {
-            std::cout << '+';
-            res = true;
-        } else if (solucion(k+1, (m + (s - V[k+1]) % m) % m)) {
-            std::cout << '-';
-            res = true;
-        } else if (solucion(k+1, (s * V[k+1]) % m)) {
-            std::cout << '*';
-            res = true;
-        } else if (solucion(k+1, modexp(s, V[k+1], m))) {
-            std::cout << '^';
-            res = true;
-        }
-        M[k][s] = res;
-        std::cout << std::endl;
+        M[k][s] = solucion(k+1, (s + V[k+1]) % m) ||
+                  solucion(k+1, (m + (s - V[k+1]) % m) % m) ||
+                  solucion(k+1, (s * V[k+1]) % m) ||
+                  solucion(k+1, modexp(s, V[k+1], m));
     }
     return M[k][s];
 }

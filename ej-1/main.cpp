@@ -155,14 +155,14 @@ void resolver(int n,int k) {
     cuadradosRestantes = k;
 
     // calculamos
-    auto start = chrono::system_clock::now();
+    // auto start = chrono::system_clock::now();
     bool existeSolucion = nEsimoCuadrado(0,0);
     if (existeSolucion) imprimirMatriz();
     else {
         cout << -1 << endl;
     }
-    auto end = chrono::system_clock::now();
-    cout << chrono::duration_cast<chrono::milliseconds>(end - start).count() << "ms" << endl;   
+    // auto end = chrono::system_clock::now();
+    // cout << chrono::duration_cast<chrono::milliseconds>(end - start).count() << "ms" << endl;   
 }
 
 int main() {
