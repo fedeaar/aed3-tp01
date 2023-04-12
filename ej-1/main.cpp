@@ -4,6 +4,7 @@
 
 using namespace std;
 
+
 //
 // GLOBAL
 //
@@ -61,7 +62,6 @@ bool excedeAlNumeroMagico(int x, int y, int i) {
     return excede || igualPeroQuedaEnFila || igualPeroQuedaEnColumna || igualPeroQuedaEnDiagonal || igualPeroQuedaEnDiagonal2;
 }
 
-
 bool noSumaLoSuficiente(int x, int y, int i) {
     int sumaFilaActual = sumasParciales[x] + i;
     int sumaColActual  = sumasParciales[limiteCuadrado+1 + y] + i;
@@ -79,6 +79,7 @@ bool rompeParidad(int x, int y, int i) {
     bool demasiadosImpares = !par && (parImpar[x] == -2 || parImpar[limiteCuadrado+1+y] == -2);
     return demasiadosPares || demasiadosImpares;
 }
+
 
 //
 // SOLUCION
@@ -137,7 +138,6 @@ bool nEsimoCuadrado(int x, int y) {
     return false;
 }
 
-
 void resolver(int n,int k) {
 
     // Se inicializan todas las variables globales
@@ -164,6 +164,11 @@ void resolver(int n,int k) {
     // auto end = chrono::system_clock::now();
     // cout << chrono::duration_cast<chrono::milliseconds>(end - start).count() << "ms" << endl;   
 }
+
+
+//
+// MAIN
+//
 
 int main() {
     int n = 0;
