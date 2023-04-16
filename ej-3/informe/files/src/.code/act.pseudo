@@ -1,0 +1,9 @@
+proc act(A: $\mathbb{N} \times \mathbb{N}$)-> $\mathbb{N} \times \mathbb{N}$:
+    ordenar A por tiempo de finalizacion
+    P <- $\emptyset$
+    i <- 0
+    para (s, t) en A:
+        si s >= i:
+            P <- P $\cup$ {(s, t)}
+            i <- t
+    retornar P
