@@ -1,7 +1,7 @@
 ej-1:
-
+    - emprolijar
 
 ej-2:
-    - encontrar bugs
 
 ej-3:
+    - informe
