@@ -23,6 +23,8 @@ int limiteCuadrado;
 int numeroMagico;
 int cuadradosRestantes;
 
+vector<int> cuadrados = {416, 400, 404, 476, 432, 456, 460, 476, 476, 460, 456, 432, 476, 404, 400, 416};
+
 
 //
 // UTILS
@@ -91,8 +93,14 @@ bool nEsimoCuadrado(int x, int y) {
     if (x == limiteCuadrado + 1) {
         return (--cuadradosRestantes) == 0;
     }
-
-    for (int i = 1; i < numerosUtilizados.size(); i++) {
+    int i = 1;
+    if (x == 0 and y == 0) {
+        while (limiteCuadrado == 3 && cuadradosRestantes > cuadrados[i-1]) {
+            i++;
+            cuadradosRestantes -= cuadrados[i-1];
+        }
+    } 
+    for (; i < numerosUtilizados.size(); i++) {
         
         if (numerosUtilizados[i]) continue;  // Revisa si i no está todavía en el cuadrado mágico
             
@@ -155,14 +163,14 @@ void resolver(int n,int k) {
     cuadradosRestantes = k;
 
     // calculamos
-    // auto start = chrono::system_clock::now();
+    auto start = chrono::system_clock::now();
     bool existeSolucion = nEsimoCuadrado(0,0);
     if (existeSolucion) imprimirMatriz();
     else {
         cout << -1 << endl;
     }
-    // auto end = chrono::system_clock::now();
-    // cout << chrono::duration_cast<chrono::milliseconds>(end - start).count() << "ms" << endl;   
+    auto end = chrono::system_clock::now();
+    cout << chrono::duration_cast<chrono::milliseconds>(end - start).count() << "ms" << endl;   
 }
 
 
