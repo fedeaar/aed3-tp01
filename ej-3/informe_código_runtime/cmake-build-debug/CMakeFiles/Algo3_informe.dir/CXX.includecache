@@ -1,0 +1,20 @@
+#IncludeRegexLine: ^[ 	]*[#%][ 	]*(include|import)[ 	]*[<"]([^">]+)([">])
+
+#IncludeRegexScan: ^.*$
+
+#IncludeRegexComplain: ^$
+
+#IncludeRegexTransform: 
+
+/mnt/c/Users/usuario1/Documents/Algo3_informe/seleccion_test.cpp
+chrono
+-
+iostream
+-
+fstream
+-
+string
+-
+vector
+-
+
