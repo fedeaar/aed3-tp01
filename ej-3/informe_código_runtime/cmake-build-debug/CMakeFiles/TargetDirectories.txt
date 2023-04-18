@@ -1,3 +1,0 @@
-/mnt/c/Users/usuario1/Documents/Algo3_informe/cmake-build-debug/CMakeFiles/rebuild_cache.dir
-/mnt/c/Users/usuario1/Documents/Algo3_informe/cmake-build-debug/CMakeFiles/edit_cache.dir
-/mnt/c/Users/usuario1/Documents/Algo3_informe/cmake-build-debug/CMakeFiles/Algo3_informe.dir

@@ -1,1 +1,0 @@
-/usr/bin/c++ -g CMakeFiles/Algo3_informe.dir/seleccion_test.cpp.o -o Algo3_informe 
