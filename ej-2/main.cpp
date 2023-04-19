@@ -1,6 +1,8 @@
 #include <iostream>
 #include <vector>
 
+using namespace std;
+
 typedef long long longl;
 
 
@@ -9,8 +11,8 @@ typedef long long longl;
 //
 
 longl c = 0, n = 0, r, m;
-std::vector<longl> V;
-std::vector<std::vector<short>> M;
+vector<longl> V;
+vector<vector<char>> M;
 
 
 //
@@ -52,7 +54,7 @@ bool solucion(longl k, longl s) {
 bool resolver() {
     M.resize(n);
     for (longl i = 0; i < n; ++i) {
-        M[i] = std::vector<short>(m, -1);
+        M[i] = vector<char>(m, -1);
     }
     return solucion(0, V[0] % m);
 }
@@ -63,20 +65,20 @@ bool resolver() {
 //
 
 int main(int argc, char** argv) {
-    std::cin >> c;
+    cin >> c;
     for (longl i = 0; i < c; ++i) {
-        std::cin >> n >> r >> m;
+        cin >> n >> r >> m;
         V.resize(n);
         for (longl j = 0; j < n; ++j) {
-            std::cin >> V[j]; 
+            cin >> V[j]; 
         }
-        std::string rta;
+        string rta;
         if (resolver()) {
             rta = "Si";
         } else {
             rta = "No";
         }
-        std::cout << rta << std::endl;
+        cout << rta << endl;
     }
     return 0;
 }
