@@ -9,7 +9,7 @@ En esto, queremos elegir las actividades con la restricción que, para todo par 
 \begin{equation}\\\nonumber
     A := \{[1,\ 3),\ [1,\ 4),\ [3,\ 6),\ [4,\ 7),\ [7,\ 8)\}
 \end{equation}
-\noindent luego las soluciones óptimas son $\{[1,\ 3),\ [3,\ 6),\ [7,\ 8)\}$ y $\{[1,\ 4),\ [4,\ 7),\ [7,\ 8)\}$. 
+\noindent luego algunas soluciones óptimas son $\{[1,\ 3),\ [3,\ 6),\ [7,\ 8)\}$ y $\{[1,\ 4),\ [4,\ 7),\ [7,\ 8)\}$. 
 
 Como condición extra, limitaremos el tiempo de la actividad $a_i$, para todo $1 \leq i \leq n$, de manera tal que $1 \leq s_i < t_i \leq 2n$. 
 
@@ -26,13 +26,13 @@ Como preámbulo a la aplicación de una estrategia \textit{golosa} para resolver
     Sigue entonces que $S$ no es óptima, ya que podemos formar una solución mejor si consideramos $S'_{<i} \cup \{a_i\} \cup S'_{>i}$, lo que es un absurdo.
 \end{proof}
 
-Luego, estamos en condiciones de evaluar el problema como una serie de decisiones que reducen el problema a una serie de subproblemas más chicos. La siguiente demostración prueba que, además, podemos alcanzar un óptimo por medio de decisiones locales. 
+Luego, estamos en condiciones de evaluar el problema dentro del marco teórico de la \textit{programación dinámica}\footnote{De seguir este camino, deberíamos demostrar, también, que el problema cuenta con la propiedad de \textit{solapamiento de subproblemas}.}. La siguiente demostración prueba que, además, podemos alcanzar un óptimo por medio de decisiones locales. 
 
 %\vspace{0.5em}
 \subsection{Demostración de la propiedad de selección golosa} Consideremos ahora la siguiente estrategia \textit{golosa}: elegir la actividad que finalice primero, de entre todas las actividades que sigan disponibles. Vamos a demostrar que esta estrategia es correcta.
 
 \begin{proof}[Demostración]
-    Notemos primero que, si la solución parcial $B_1\ ...\ B_i$ de actividades seleccionadas ---que brinde un algoritmo goloso que implemente esta estrategia--- se puede extender a una solución óptima, para todo $0 \leq i \leq n$, entonces la estrategia es correcta. Lo demostraremos por inducción.
+    Notemos primero que, si una solución parcial $B_1\ ...\ B_i$ de actividades seleccionadas ---que brinde un algoritmo goloso que implemente esta estrategia--- se puede extender a una solución óptima, para todo $0 \leq i \leq n$, entonces la estrategia es correcta. Lo demostraremos por inducción.
 
     Para el caso base, $i = 0$, el algoritmo todavía no eligió ninguna actividad. Luego, podemos extender la solución a una solución óptima de manera trivial.
 
@@ -40,11 +40,11 @@ Luego, estamos en condiciones de evaluar el problema como una serie de decisione
     \begin{align}\nonumber
         B_1\ ...\ B_i,\ C_{i+1}\ ...\ C_j
     \end{align}
-    donde, sin pérdida de generalidad, vamos a suponer que la secuencia de actividades sin solapamiento $C_{i+1}\ ...\ C_j$ está ordenada por tiempo de finalización. 
+    donde $j \leq n$ y, sin pérdida de generalidad, vamos a suponer que la secuencia de actividades sin solapamiento $C_{i+1}\ ...\ C_j$ está ordenada por tiempo de finalización. 
 
     Notar que, por nuestro método de selección, $B_1\ ...\ B_i$ también debe estar ordenado de la misma manera. Luego, todas las actividades $C_{i+1}\ ...\ C_j$ deben empezar después de que termine $B_i$ para que la extensión sea válida. Si no, habría solapamientos, ya que, por definición de la estrategia, deben terminar después que $B_i$.
 
-    Consideremos ahora la solución parcial golosa $B_1\ ...\ B_{i+1}$, donde $B_{i+1}$ es la actividad cuyo momento final ocurre antes entre todas las actividades restantes y no se solapa con las actividades ya seleccionadas. 
+    Consideremos ahora la solución parcial golosa $B_1\ ...\ B_{i+1}$, donde ---por el método de selección--- $B_{i+1}$ es la actividad cuyo momento final ocurre antes entre todas las actividades restantes y no se solapa con las actividades ya seleccionadas. 
 
     Como $B_{i+1}$ debe terminar antes que $C_{i+1}$ o $B_{i+1} = C_{i+1}$, entonces $B_{i+1}$ no puede solaparse con ninguna actividad $C_{i+2}\ ...\ C_j$. Esto se debe a que $C_{i+1}$ no lo hacía y, por hipótesis inductiva, es la actividad que termina antes en la extensión. Luego, $B_1\ ...\ B_{i+1}$ se puede extender por reemplazo directo a la solución óptima 
     \begin{align}\nonumber
@@ -54,18 +54,18 @@ Luego, estamos en condiciones de evaluar el problema como una serie de decisione
 \end{proof}
 
 %\vspace{1em}
-\subsection{El algoritmo} En base a estas propiedades, podemos considerar el siguiente algoritmo \textit{goloso} como una resolución al problema de \textit{selección de actividades}. 
+\subsection{El algoritmo} En base a estas propiedades, podemos considerar el siguiente algoritmo \textit{goloso} como una resolución al problema de la \textit{selección de actividades}. 
 
 %\vspace{1em}
 \lstinputlisting[mathescape=true, language=pseudo, label=actividades, caption={Pseudocódigo para la \textit{selección de actividades}.}]{files/src/.code/act.pseudo}
 
-El mismo itera sobre las actividades en $A$ por orden de finalización. En base a la estrategia golosa, decide incluir, o no, una actividad si y sólo si comienza después de que termine la última actividad que ya incluyó, cuyo tiempo de finalización se guarda en la variable $i$. Dado que no tiene sentido considerar tiempos negativos, inicializamos $i$ en $0$.
+El mismo itera sobre las actividades en $A$ por orden de finalización. En base a la estrategia golosa, decide incluir, o no, una actividad si y sólo si comienza después de que termine la última actividad que ya se incluyó a la solución, cuyo tiempo de finalización se guarda en la variable $i$. Dado que no tiene sentido considerar tiempos negativos, inicializamos $i$ en $0$.
 
 %\vspace{1em}
 \subsection{Complejidad temporal y espacial} El comportamiento del algoritmo depende del método de ordenamiento que elijamos y de las características de la estructura subyacente al conjunto $P$ (en particular, si la inserción de un elemento se puede realizar en tiempo constante). 
 
-Respecto al método de ordenamiento, dado que los tiempos de finalización estan acotados por $2n$, podemos utilizar \textit{counting sort} para garantizar una complejidad de peor caso, tanto temporal como espacial, de orden lineal. Notar que \textit{counting sort} tiene complejidad $O(m + k)$ donde $m$ es la cantidad de elementos a ordenar y $k$ es la diferencia entre el valor máximo y mínimo en el conjunto. Luego, nuestro ordenamiento tiene complejidad $O(n + 2n) = O(n)$.
+Respecto al método de ordenamiento, dado que los tiempos de finalización estan acotados por $2n$, podemos utilizar \textit{counting sort} para garantizar una complejidad de peor caso, tanto temporal como espacial, de orden lineal. Notar que \textit{counting sort} tiene complejidad $\Theta(m + k)$ donde $m$ es la cantidad de elementos a ordenar y $k$ es la diferencia entre el valor máximo y mínimo en el conjunto. Para simplificar el algoritmo, vamos a trabajar con $k = 2n$ fijo. Luego, el ordenamiento es $\Theta(n + 2n) = \Theta(n)$.
 
 Respecto a las características de $P$, si se implementa como un arreglo de tamaño $n$ ---dado que una solución óptima tiene a lo sumo esta cantidad de actividades---, sigue que el costo de inserción es constante. Sin embargo, debemos tener cuidado de liberar el espacio excedente luego de obtener un resultado.
 
-De estas observaciones, y el hecho de que, como hay $n$ actividades, el costo temporal del ciclo es lineal, sigue que tanto la complejidad temporal como espacial de peor caso del algoritmo es $O(n)$.
+De estas observaciones, y el hecho de que, como hay $n$ actividades, el costo temporal del ciclo es lineal, sigue que tanto la complejidad temporal como espacial de peor caso del algoritmo es $\Theta(n)$.

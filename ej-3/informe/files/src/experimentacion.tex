@@ -1,6 +1,6 @@
 % experimentacion
 \vspace{1em}
-Para revisar de manera empírica la cota lineal del algoritmo\footnote{Los experimentos y archivos resultantes se pueden encontrar en \textit{./ej-3/experimentacion}.}, procedimos a implementarlo en $C++$ y realizamos una serie de evaluaciones respecto a su tiempo de ejecución en función del tamaño $n$ de la entrada, para muestras aleatorias con $n = 2^k$ para $k$ natural en el rango $[16,\ 26]$. Realizamos cada evaluación diez veces para reducir la variación de los resultados y tomamos el promedio aritmético. 
+Para revisar de manera empírica la cota lineal del algoritmo\footnote{Los experimentos y archivos resultantes se pueden encontrar en \textit{./ej-3/experimentacion}.}, procedimos a implementarlo en $C++$ y realizamos una serie de evaluaciones respecto al tiempo de ejecución en función del tamaño de la entrada, para muestras aleatorias de tamaño $n = 2^k$ para cada $k$ natural en el rango $16 \leq k \leq 26$. Realizamos cada evaluación diez veces para reducir la variación de los resultados y tomamos el promedio aritmético. 
 
 El siguiente gráfico describe, en escala \textit{log-log} ---dada la naturaleza exponencial de los casos de test--- la relación entre el tamaño de entrada y el tiempo de ejecución. También, muestra la línea que mejor describe los datos, resultante de aplicar regresión lineal.  
 %Luego graficamos el tiempo de ejecución de en función de estos tamaños de entrada, aplicando el logaritmo en ambas entradas para mejorar la visibilidad, dada la naturaleza exponencial de las muestras. Tras aplicar regresión lineal, el gráfico quedó de la siguiente forma:
@@ -14,7 +14,7 @@ La relación lineal es bastante clara. Para asegurarnos, calculamos también el 
 % instancias
 \subsection{Instancias de interés}
 
-Un análisis rápido del algoritmo indica que lo único que parece alterar el flujo del código, en función de la entrada, es 
+Un análisis del algoritmo indica que lo único que parece alterar el flujo del código\footnote{Notar que, por la cota fija de $2n$ que tomamos para \textit{counting sort}, un rango de intervalos menor a $2n$ no afectará el comportamiento de esta parte del algoritmo. Así también ---por sus características---, el mismo no se verá afectado por el ordenamiento inicial de la entrada.}, en función de la entrada, es 
 la cantidad de actividades que son seleccionadas. Donde, por cada actividad seleccionada, se ejecutan dos lineas de código más (en particular, se agrega un elemento más al conjunto de soluciones $P$). %Sin embargo, de implementarse como proponemos, solo agrega un tiempo de ejecución constante, por lo que no debería ser demasiado significativo.
 %cada tupla ordenada empieza después (o al mismo tiempo) que cuando termina la última tarea de P. 
 
@@ -24,8 +24,8 @@ El siguiente gráfico, nuevamente en escala \textit{log-log} por la naturaleza d
 
 \begin{figure}[!htbp]
     \includegraphics[scale=0.5, clip]{./files/src/.media/comparacion.png}
-    \caption{Tiempo de ejecución de \textit{actividades} en función del tamaño de entrada $n$ y la cantidad máxima $m$ de tareas seleccionables, para \textit{comprimida} ---$m = 1$--- y \textit{separadas} ---$m = n$---.} \label{comparacion}
+    \caption{Tiempo de ejecución de la \textit{selección de actividades} en función del tamaño de entrada $n$ y la cantidad máxima $m$ de tareas seleccionables, para \textit{comprimida} ---$m = 1$--- y \textit{separadas} ---$m = n$---.} \label{comparacion}
 \end{figure}
 
 
-Si bien es verdad que, en las entradas más grandes, las entradas \textit{separdas} parecen haber tomado un poco más de tiempo, no resulta una diferencia significativa. En promedio, la diferencia entre ambos tipos de entrada fue del $\approx 0.0208$ a favor de \textit{separadas}.
+Si bien es verdad que, en las entradas más grandes, las instancias de \textit{separdas} parecen haber tomado un poco más de tiempo, la diferencia no resulta significativa. En promedio, \textit{separadas} fue $\approx 20.8$ milisegundos más lenta.
