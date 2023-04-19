@@ -1,6 +1,5 @@
 #include <iostream>
 #include <vector>
-#include <chrono>
 
 using namespace std;
 
@@ -22,8 +21,6 @@ vector<int> parImpar;                   // Este vector contiene la diferencia de
 int limiteCuadrado;
 int numeroMagico;
 int cuadradosRestantes;
-
-vector<int> cuadrados = {416, 400, 404, 476, 432, 456, 460, 476, 476, 460, 456, 432, 476, 404, 400, 416};
 
 
 //
@@ -93,18 +90,11 @@ bool nEsimoCuadrado(int x, int y) {
     if (x == limiteCuadrado + 1) {
         return (--cuadradosRestantes) == 0;
     }
-    int i = 1;
-    if (x == 0 and y == 0) {
-        while (limiteCuadrado == 3 && cuadradosRestantes > cuadrados[i-1]) {
-            i++;
-            cuadradosRestantes -= cuadrados[i-1];
-        }
-    } 
-    for (; i < numerosUtilizados.size(); i++) {
+    for (int i = 1; i < numerosUtilizados.size(); i++) {
         
         if (numerosUtilizados[i]) continue;  // Revisa si i no está todavía en el cuadrado mágico
             
-        // podas
+    // podas
         // Si la fila/columna excede al número mágico, todos los valores posibles de i también lo harán
         if (excedeAlNumeroMagico(x, y, i)) return false;
         // Si ya no podemos llegar al numero magico, descartamos
@@ -112,11 +102,11 @@ bool nEsimoCuadrado(int x, int y) {
         // ser 0
         if (noSumaLoSuficiente(x, y, i) || (limiteCuadrado == 3 && rompeParidad(x,y,i))) continue;
 
-        // resultado parcial
+    // resultado parcial
         numerosUtilizados[i] = true; // Esta rama ya no va a poder utilizar este valor
         cuadradoMagico[x][y] = i;
 
-        // actualizamos sumas parciales
+    // actualizamos sumas parciales
         sumasParciales[x] += i;
         sumasParciales[limiteCuadrado+1 + y] += i;
         if (x == y) sumasParciales[(limiteCuadrado+1)*2] += i;
@@ -124,14 +114,15 @@ bool nEsimoCuadrado(int x, int y) {
         bool esPar = i % 2 == 0;
         parImpar[x] += esPar - !esPar;
         parImpar[limiteCuadrado+1+y] += esPar - !esPar;
-        // recurrimos
+    
+    // recursion
         if (y < limiteCuadrado) {
             if (nEsimoCuadrado(x, y + 1)) return true; // short circuit
         } else {
             if (nEsimoCuadrado(x + 1, 0)) return true;
         }
 
-        // deshacemos cambios
+    // deshacemos cambios
         sumasParciales[x] -= i;
         sumasParciales[limiteCuadrado+1 + y] -= i;
         if (x == y) sumasParciales[(limiteCuadrado+1)*2] -= i;
@@ -139,15 +130,13 @@ bool nEsimoCuadrado(int x, int y) {
 
         parImpar[x] -=  esPar - !esPar;
         parImpar[limiteCuadrado+1+y] -= esPar - !esPar;
-        // liberamos el valor
+    
         numerosUtilizados[i] = false;
     }
-
     return false;
 }
 
 void resolver(int n,int k) {
-
     // Se inicializan todas las variables globales
     generarCuadradoMagico(n);
     limiteCuadrado = n-1;
@@ -162,15 +151,12 @@ void resolver(int n,int k) {
     numeroMagico = (n*n*n + n) / 2;
     cuadradosRestantes = k;
 
-    // calculamos
-    auto start = chrono::system_clock::now();
     bool existeSolucion = nEsimoCuadrado(0,0);
-    if (existeSolucion) imprimirMatriz();
-    else {
+    if (existeSolucion) {
+        imprimirMatriz();
+    } else {
         cout << -1 << endl;
     }
-    auto end = chrono::system_clock::now();
-    cout << chrono::duration_cast<chrono::milliseconds>(end - start).count() << "ms" << endl;   
 }
 
 
@@ -181,11 +167,8 @@ void resolver(int n,int k) {
 int main() {
     int n = 0;
     int k = 0;
-    // std::cout << "Seleccione un valor para n: ";
-    std::cin >> n;
-    // std::cout << "Seleccione un valor para k: ";
-    std::cin >> k;
-    resolver(n,k);
-
+    cin >> n;
+    cin >> k;
+    resolver(n, k);
     return 0;
 }
