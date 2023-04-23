@@ -5,22 +5,17 @@
 #include <vector>
 
 using namespace std;
-using namespace std;
 
-typedef std::pair<int, int> actividad;
-typedef std::pair<int, actividad> actividad_enumerada;
+typedef pair<int, int> actividad;
+typedef pair<int, actividad> actividad_enumerada;
 
-vector<int> read_input(int size) {
-    vector<int> input(size); string file_name = "inputs/input_" + to_string(size);
-    cout << file_name << endl;
-    ifstream read_file(file_name);
-    for (int i=0; i<size; i++) read_file >> input[i];
-    read_file.close();
-    return input;
-}
 
-void sort(std::vector<actividad_enumerada>& V, int n) {
-    std::vector<std::vector<actividad_enumerada>> counts(2*n + 1, std::vector<actividad_enumerada>());
+//
+// SOLUCION
+//
+
+void sort(vector<actividad_enumerada>& V, int n) {
+    vector<vector<actividad_enumerada>> counts(2*n + 1, vector<actividad_enumerada>());
     for (int i = 0; i < V.size(); ++i) {
         actividad_enumerada v = V[i];
         counts[v.second.second].push_back(v);
@@ -35,11 +30,9 @@ void sort(std::vector<actividad_enumerada>& V, int n) {
     return;
 }
 
-double measure(vector<actividad_enumerada> V, int n) {
-    auto start = chrono::high_resolution_clock::now();
-
+vector<actividad_enumerada> act(vector<actividad_enumerada>& V, int n) {
     sort(V, n);
-    std::vector<actividad_enumerada> res;
+    vector<actividad_enumerada> res;
     int i = 0;
     for (const actividad_enumerada& v : V) {
         if (v.second.first >= i) {
@@ -47,11 +40,36 @@ double measure(vector<actividad_enumerada> V, int n) {
             i = v.second.second;
         }
     }
+    return res;
+}
 
+
+//
+// EXPERIMENTO (usamos como template el experimento hecho en clase)
+//
+
+vector<int> read_input(int size) {
+    vector<int> input(size); string file_name = "inputs/input_" + to_string(size);
+    cout << file_name << endl;
+    ifstream read_file(file_name);
+    for (int i=0; i<size; i++) read_file >> input[i];
+    read_file.close();
+    return input;
+}
+
+
+double measure(vector<actividad_enumerada> V, int n) {
+    auto start = chrono::high_resolution_clock::now();
+    act(V, n);
     auto stop = chrono::high_resolution_clock::now();
     chrono::duration<double> diff = stop - start;
     return diff.count();
 }
+
+
+//
+// MAIN
+//
 
 int main() {
     int repeat = 10;

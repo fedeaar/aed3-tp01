@@ -29,10 +29,10 @@ Como preámbulo a la aplicación de una estrategia \textit{golosa} para resolver
 Luego, estamos en condiciones de evaluar el problema dentro del marco teórico de la \textit{programación dinámica}\footnote{De seguir este camino, deberíamos demostrar, también, que el problema cuenta con la propiedad de \textit{solapamiento de subproblemas}.}. La siguiente demostración prueba que, además, podemos alcanzar un óptimo por medio de decisiones locales. 
 
 %\vspace{0.5em}
-\subsection{Demostración de la propiedad de selección golosa} Consideremos ahora la siguiente estrategia \textit{golosa}: elegir la actividad que finalice primero, de entre todas las actividades que sigan disponibles. Vamos a demostrar que esta estrategia es correcta.
+\subsection{Demostración de la propiedad de selección golosa} Consideremos ahora la siguiente estrategia \textit{golosa}: elegir la actividad que finalice primero, de entre todas las actividades que sigan disponibles. Vamos a demostrar que esta estrategia es óptima.
 
 \begin{proof}[Demostración]
-    Notemos primero que, si una solución parcial $B_1\ ...\ B_i$ de actividades seleccionadas ---que brinde un algoritmo goloso que implemente esta estrategia--- se puede extender a una solución óptima, para todo $0 \leq i \leq n$, entonces la estrategia es correcta. Lo demostraremos por inducción.
+    Notemos primero que, si una solución parcial $B_1\ ...\ B_i$ de actividades seleccionadas ---que brinde un algoritmo goloso que implemente esta estrategia--- se puede extender a una solución óptima, para todo $0 \leq i \leq n$, entonces la estrategia es óptima. Lo demostraremos por inducción.
 
     Para el caso base, $i = 0$, el algoritmo todavía no eligió ninguna actividad. Luego, podemos extender la solución a una solución óptima de manera trivial.
 
