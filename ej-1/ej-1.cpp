@@ -63,6 +63,7 @@ bool excedeAlNumeroMagico(int x, int y, int i) {
     return excede || igualPeroQuedaEnFila || igualPeroQuedaEnColumna || igualPeroQuedaEnDiagonal || igualPeroQuedaEnDiagonal2;
 }
 
+
 bool noSumaLoSuficiente(int x, int y, int i) {
     //Si una fila,columna o diagonal no llega al número mágico incluso si se llenan los casilleros restantes con
     //los máximos valores posibles, podamos.
@@ -76,11 +77,14 @@ bool noSumaLoSuficiente(int x, int y, int i) {
            (x + y == limiteCuadrado && sumDiagonal2 + sumasMaximas[x] < numeroMagico);
 }
 
+
 bool rompeParidad(int x, int y, int i) {
     //Un cuadrado mágico de n=4 no puede tener una fila o columna de todos números pares o impares.
     //Como tampoco puede haber 3 de uno y 1 de otro (la suma sería impar), tiene que haber 2 y 2 en cada fila y columna
     //Demostración empírica: generamos los 7040 cuadrados y todos cumplían esta propiedad.
-    //Demostración formal: está relacionada a los restos de la suma de filas y columnas con 4.
+    //Demostración formal: se puede realizar exhaustivamente por descarte sobre las combinaciones de los restos 
+    // de la suma de filas y columnas modulo 4 que equivalen al numero mágico modulo 4. Estas no pueden incluir una fila o 
+    // columna toda par o impar por descarte.
     bool par = i%2 == 0;
     //Si ya hay 3 pares o 3 impares no se puede generar un cuadrado válido.
     bool demasiadosPares = par && (parImpar[x] == 2 || parImpar[limiteCuadrado+1+y] == 2);
@@ -103,7 +107,7 @@ bool nEsimoCuadrado(int x, int y) {
         
         if (numerosUtilizados[i]) continue;  // Revisa si i no está todavía en el cuadrado mágico
             
-    // podas
+        // podas
         // Si la fila/columna excede al número mágico, todos los valores posibles de i también lo harán
         if (excedeAlNumeroMagico(x, y, i)) return false;
         // Si ya no podemos llegar al numero magico, descartamos
@@ -111,11 +115,11 @@ bool nEsimoCuadrado(int x, int y) {
         // ser 0
         if (noSumaLoSuficiente(x, y, i) || (limiteCuadrado == 3 && rompeParidad(x,y,i))) continue;
 
-    // resultado parcial
+        // resultado parcial
         numerosUtilizados[i] = true; // Esta rama ya no va a poder utilizar este valor
         cuadradoMagico[x][y] = i;
 
-    // actualizamos sumas parciales
+        // actualizamos sumas parciales
         sumasParciales[x] += i;
         sumasParciales[limiteCuadrado+1 + y] += i;
         if (x == y) sumasParciales[(limiteCuadrado+1)*2] += i;
@@ -124,14 +128,14 @@ bool nEsimoCuadrado(int x, int y) {
         parImpar[x] += esPar - !esPar;
         parImpar[limiteCuadrado+1+y] += esPar - !esPar;
     
-    // recursion
+        // recursion
         if (y < limiteCuadrado) {
             if (nEsimoCuadrado(x, y + 1)) return true; // short circuit
         } else {
             if (nEsimoCuadrado(x + 1, 0)) return true;
         }
 
-    // deshacemos cambios
+        // deshacemos cambios
         sumasParciales[x] -= i;
         sumasParciales[limiteCuadrado+1 + y] -= i;
         if (x == y) sumasParciales[(limiteCuadrado+1)*2] -= i;
@@ -142,10 +146,12 @@ bool nEsimoCuadrado(int x, int y) {
     
         numerosUtilizados[i] = false;
     }
+
     return false;
 }
 
 void resolver(int n,int k) {
+    
     // Se inicializan todas las variables globales.
     generarCuadradoMagico(n);
     limiteCuadrado = n-1;
