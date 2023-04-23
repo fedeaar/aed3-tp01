@@ -48,12 +48,14 @@ void imprimirMatriz() {
 //
 
 bool excedeAlNumeroMagico(int x, int y, int i) {
+    //Si una fila, columna, o diagonal excede al número mágico, no podrá formarse un cuadrado mágico.
+    //Podemos podar antes de que se complete la fila/columna/diagonal porque no hay números negativos.
     int sumaFilaActual = sumasParciales[x] + i;
     int sumaColActual  = sumasParciales[limiteCuadrado+1 + y] + i;
     int sumDiagonal    = sumasParciales[(limiteCuadrado+1)*2] + i * (x == y);
     int sumDiagonal2   = sumasParciales[(limiteCuadrado+1)*2 + 1] + i * (x + y == limiteCuadrado);
     bool excede = (sumaFilaActual > numeroMagico) || (sumaColActual > numeroMagico) || (sumDiagonal > numeroMagico) || (sumDiagonal2 > numeroMagico);
-    //Si todavia quedan numeros por llenar, es imposible que sea una solucion valida
+    //Si todavia quedan numeros por llenar, es imposible que sea una solucion valida, el 0 no está en el cuadrado
     bool igualPeroQuedaEnFila = sumaFilaActual == numeroMagico && y < limiteCuadrado;
     bool igualPeroQuedaEnColumna = sumaColActual == numeroMagico && x < limiteCuadrado;
     bool igualPeroQuedaEnDiagonal = sumDiagonal == numeroMagico && (x < limiteCuadrado || y < limiteCuadrado);
@@ -62,6 +64,8 @@ bool excedeAlNumeroMagico(int x, int y, int i) {
 }
 
 bool noSumaLoSuficiente(int x, int y, int i) {
+    //Si una fila,columna o diagonal no llega al número mágico incluso si se llenan los casilleros restantes con
+    //los máximos valores posibles, podamos.
     int sumaFilaActual = sumasParciales[x] + i;
     int sumaColActual  = sumasParciales[limiteCuadrado+1 + y] + i;
     int sumDiagonal    = sumasParciales[(limiteCuadrado+1)*2] + i * (x == y);
@@ -73,7 +77,12 @@ bool noSumaLoSuficiente(int x, int y, int i) {
 }
 
 bool rompeParidad(int x, int y, int i) {
+    //Un cuadrado mágico de n=4 no puede tener una fila o columna de todos números pares o impares.
+    //Como tampoco puede haber 3 de uno y 1 de otro (la suma sería impar), tiene que haber 2 y 2 en cada fila y columna
+    //Demostración empírica: generamos los 7040 cuadrados y todos cumplían esta propiedad.
+    //Demostración formal: está relacionada a los restos de la suma de filas y columnas con 4.
     bool par = i%2 == 0;
+    //Si ya hay 3 pares o 3 impares no se puede generar un cuadrado válido.
     bool demasiadosPares = par && (parImpar[x] == 2 || parImpar[limiteCuadrado+1+y] == 2);
     bool demasiadosImpares = !par && (parImpar[x] == -2 || parImpar[limiteCuadrado+1+y] == -2);
     return demasiadosPares || demasiadosImpares;
@@ -98,7 +107,7 @@ bool nEsimoCuadrado(int x, int y) {
         // Si la fila/columna excede al número mágico, todos los valores posibles de i también lo harán
         if (excedeAlNumeroMagico(x, y, i)) return false;
         // Si ya no podemos llegar al numero magico, descartamos
-        // También descartamos si es un cuadrado de 4x4 y la diferencia de pares e impares no puede
+        // También descartamos si es un cuadrado de 4x4 y la diferencia de pares e impares ya no puede
         // ser 0
         if (noSumaLoSuficiente(x, y, i) || (limiteCuadrado == 3 && rompeParidad(x,y,i))) continue;
 
@@ -137,9 +146,10 @@ bool nEsimoCuadrado(int x, int y) {
 }
 
 void resolver(int n,int k) {
-    // Se inicializan todas las variables globales
+    // Se inicializan todas las variables globales.
     generarCuadradoMagico(n);
     limiteCuadrado = n-1;
+    //Cada número entre 1 y n*n puede estar una sola vez en el cuadrado mágico.
     numerosUtilizados.resize(n*n+1, false);
     sumasParciales.resize(2*n + 2, 0);
     parImpar.resize(2*n, 0);
